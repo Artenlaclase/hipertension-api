@@ -444,3 +444,53 @@ php artisan migrate --seed
 | **Base de datos** | MySQL (compatible con cPanel compartido) |
 | **API** | REST, JSON, protegida con JWT |
 | **Sync** | REST API estándar |
+
+---
+
+## 9. Mapeo de Requisitos Funcionales (SRS)
+
+| Requisito | Descripción | Endpoint(s) | Controlador |
+|-----------|-------------|-------------|-------------|
+| **RF-01** | Onboarding: PA inicial, restricciones alimentarias | `POST /api/onboarding` | `AuthController@onboarding` |
+| **RF-02** | Monitoreo visual de PA (estadísticas diarias/semanales/mensuales) | `GET /api/blood-pressure-stats?period=weekly` | `BloodPressureRecordController@statistics` |
+| **RF-03** | Semáforo de clasificación de PA (verde / amarillo / rojo) | Incluido en `store`, `show`, `statistics` | `BloodPressureRecordController` |
+| **RF-04** | Planes alimenticios personalizados | `CRUD /api/meal-plans` | `MealPlanController` |
+| **RF-05** | Recomendaciones nutricionales dinámicas DASH | `GET /api/nutritional-recommendations` | `NutritionalRecommendationController` |
+| **RF-06** | Registro de alimentos consumidos | `CRUD /api/food-logs`, `GET /api/foods` | `FoodLogController`, `FoodController` |
+| **RF-07** | Contenido educativo progresivo | `GET /api/educational-contents` | `EducationalContentController` |
+| **RF-08** | Seguimiento de hábitos con rachas y refuerzo positivo | `GET /api/habit-streaks`, `GET /api/habit-streaks/{habit}` | `HabitStreakController` |
+| **RF-09.1** | Registro de medicamentos | `CRUD /api/medications` | `MedicationController` |
+| **RF-09.2** | Alarmas (notificación local Flutter) | `POST /api/medications/{id}/alarms` | `MedicationAlarmController` |
+| **RF-09.3** | Registro de toma | `POST /api/medications/{id}/logs` | `MedicationLogController` |
+| **RF-09.4** | Estadísticas de adherencia | `GET /api/medication-adherence?period=monthly` | `MedicationAdherenceController` |
+| **RF-10** | Dashboard consolidado + historial filtrable | `GET /api/dashboard`, `GET /api/history` | `DashboardController` |
+
+### Requisitos No Funcionales
+
+| Requisito | Implementación |
+|-----------|---------------|
+| **RNF-01** | Diseño responsive delegado al frontend Flutter |
+| **RNF-02** | JWT con refresh token, contraseñas hash bcrypt |
+| **RNF-03** | MySQL compatible con cPanel compartido |
+| **RNF-04** | REST JSON + caché de Eloquent |
+| **RNF-05** | `GET /api/disclaimer` – Aviso legal público |
+
+### Nuevas Migraciones (SRS)
+
+| Migración | Campos agregados |
+|-----------|-----------------|
+| `_000011_add_onboarding_fields_to_users_table` | `initial_systolic`, `initial_diastolic`, `food_restrictions`, `onboarding_completed` |
+| `_000012_add_order_to_educational_contents_table` | `order`, `is_premium` |
+
+### Nuevos Controladores (SRS)
+
+| Controlador | Responsabilidad |
+|-------------|----------------|
+| `NutritionalRecommendationController` | Recomendaciones DASH dinámicas según última PA |
+| `HabitStreakController` | Cálculo de rachas y mensajes de refuerzo positivo |
+| `MedicationAdherenceController` | Estadísticas de adherencia con alertas informativas |
+| `DashboardController` | Vista consolidada + historial unificado |
+
+### Total de Rutas API
+
+**51 rutas** registradas (`php artisan route:list`), incluyendo: 3 públicas (register, login, disclaimer) y 48 protegidas con JWT.
