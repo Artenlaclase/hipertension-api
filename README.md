@@ -1,66 +1,243 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Hipertensión API
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+API REST para la aplicación móvil de nutrición y control de hipertensión arterial.
 
-## About Laravel
+> **Stack:** Laravel 10 · JWT · MySQL · cPanel  
+> **Cliente:** Flutter  
+> **Endpoints:** 58 rutas (3 públicas + 55 protegidas)
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Requisitos
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- PHP ≥ 8.1
+- Composer
+- MySQL 5.7+
+- Extensiones PHP: `pdo_mysql`, `mbstring`, `openssl`, `tokenizer`, `xml`
 
-## Learning Laravel
+## Instalación
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+```bash
+# 1. Clonar el repositorio
+git clone <url-del-repo> hipertension-api
+cd hipertension-api
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+# 2. Instalar dependencias
+composer install
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+# 3. Configurar entorno
+cp .env.example .env
+php artisan key:generate
 
-## Laravel Sponsors
+# 4. Configurar base de datos en .env
+# DB_DATABASE=hipertension
+# DB_USERNAME=tu_usuario
+# DB_PASSWORD=tu_clave
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+# 5. Generar clave JWT
+php artisan jwt:secret
 
-### Premium Partners
+# 6. Ejecutar migraciones y seeders
+php artisan migrate --seed
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+# 7. Iniciar servidor de desarrollo
+php artisan serve
+```
 
-## Contributing
+La API estará disponible en `http://localhost:8000/api`.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## Autenticación
 
-## Code of Conduct
+Se utiliza **JWT** (JSON Web Token) mediante el paquete `tymon/jwt-auth`.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+```
+POST /api/register   → Registro (retorna token)
+POST /api/login      → Login (retorna token + onboarding_completed)
+POST /api/refresh    → Renovar token
+POST /api/logout     → Cerrar sesión
+```
 
-## Security Vulnerabilities
+Incluir el token en cada petición protegida:
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```
+Authorization: Bearer <token>
+```
 
-## License
+## Módulos funcionales
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### 1. Onboarding (RF-01)
+Captura datos clínicos iniciales: PA, peso, altura, nivel de actividad, restricciones alimentarias.
+
+```
+POST /api/onboarding
+```
+
+### 2. Presión arterial (RF-02 / RF-03)
+Registro de mediciones con **semáforo de clasificación automático**:
+
+| Color | Nivel | Sistólica | Diastólica |
+|-------|-------|-----------|------------|
+| 🟢 Verde | Controlada | < 120 | < 80 |
+| 🟡 Amarillo | Elevada | 120–139 | 80–89 |
+| 🔴 Rojo | Alta | ≥ 140 | ≥ 90 |
+
+```
+GET|POST|DELETE  /api/blood-pressure
+GET              /api/blood-pressure-stats?period=weekly
+```
+
+### 3. Plan alimenticio (RF-04)
+CRUD completo de planes semanales personalizados.
+
+```
+GET|POST|PUT|DELETE  /api/meal-plans
+```
+
+### 4. Recomendaciones nutricionales DASH (RF-05)
+Recomendaciones dinámicas basadas en la última medición de PA: sustituciones, alimentos sugeridos y a evitar.
+
+```
+GET /api/nutritional-recommendations
+```
+
+### 5. Alimentos y registro de consumo (RF-06)
+Catálogo de alimentos con datos nutricionales + registro diario.
+
+```
+GET|POST       /api/foods
+GET|POST|DEL   /api/food-logs
+```
+
+### 6. Contenido educativo (RF-07)
+Artículos educativos con orden progresivo.
+
+```
+GET /api/educational-contents
+GET /api/educational-contents/{id}
+```
+
+### 7. Hábitos saludables y rachas (RF-08)
+Seguimiento de hábitos con cálculo de rachas consecutivas y mensajes de refuerzo positivo.
+
+```
+GET|POST|DEL   /api/habit-logs
+GET            /api/habit-streaks
+GET            /api/habit-streaks/{habit}
+```
+
+### 8. Medicamentos y adherencia (RF-09)
+Registro de medicamentos, alarmas (notificación local en Flutter), logs de toma y estadísticas de adherencia.
+
+```
+GET|POST|PUT|DEL  /api/medications
+POST              /api/medications/{id}/alarms
+GET|POST          /api/medications/{id}/logs
+GET               /api/medication-adherence?period=monthly
+```
+
+### 9. Dashboard consolidado (RF-10)
+Vista resumen + historial unificado filtrable por fechas.
+
+```
+GET /api/dashboard
+GET /api/history?from=2026-01-01&to=2026-02-07
+```
+
+### 10. Hidratación e infusiones
+Catálogo de 16 infusiones clasificadas por seguridad para HTA + seguimiento de ingesta diaria con meta de 2L.
+
+```
+GET|POST       /api/infusions
+GET            /api/infusions/{id}
+GET|POST|DEL   /api/hydration-logs
+GET            /api/hydration-summary?date=2026-02-07
+```
+
+**Semáforo de infusiones:** las marcadas como `avoid` se bloquean al registrar (422), las de `caution` devuelven advertencia.
+
+## Base de datos
+
+**14 tablas** gestionadas por migraciones de Eloquent:
+
+| Tabla | Descripción |
+|-------|-------------|
+| `users` | Usuarios con perfil clínico |
+| `blood_pressure_records` | Mediciones de PA |
+| `foods` | Catálogo de alimentos |
+| `food_logs` | Registro de consumo |
+| `meal_plans` | Planes alimenticios semanales |
+| `medications` | Medicamentos del usuario |
+| `medication_alarms` | Horarios de toma |
+| `medication_logs` | Registro de tomas |
+| `educational_contents` | Artículos educativos |
+| `habits` | Catálogo de hábitos saludables |
+| `habit_logs` | Seguimiento diario de hábitos |
+| `infusions` | Catálogo de infusiones para HTA |
+| `hydration_logs` | Registro de ingesta de líquidos |
+| `password_reset_tokens` | Tokens de reset de contraseña |
+
+### Seeders incluidos
+
+| Seeder | Registros |
+|--------|-----------|
+| `FoodSeeder` | 23 alimentos |
+| `HabitSeeder` | 10 hábitos |
+| `EducationalContentSeeder` | 8 artículos |
+| `InfusionSeeder` | 16 infusiones (7 seguras, 5 precaución, 4 evitar) |
+
+```bash
+php artisan migrate --seed
+```
+
+## Estructura del proyecto
+
+```
+app/
+├── Http/Controllers/
+│   ├── AuthController.php              # Auth + onboarding
+│   ├── BloodPressureRecordController   # PA + semáforo + stats
+│   ├── NutritionalRecommendationController  # DASH
+│   ├── DashboardController             # Vista consolidada
+│   ├── HabitStreakController           # Rachas + refuerzo
+│   ├── MedicationAdherenceController   # Adherencia
+│   ├── InfusionController             # Catálogo infusiones
+│   ├── HydrationLogController         # Registro hidratación
+│   ├── FoodController / FoodLogController
+│   ├── MealPlanController
+│   ├── MedicationController / MedicationAlarmController / MedicationLogController
+│   ├── EducationalContentController
+│   ├── HabitController / HabitLogController
+│   └── Controller.php
+├── Models/
+│   ├── User.php
+│   ├── BloodPressureRecord.php
+│   ├── Food.php / FoodLog.php / MealPlan.php
+│   ├── Medication.php / MedicationAlarm.php / MedicationLog.php
+│   ├── EducationalContent.php
+│   ├── Habit.php / HabitLog.php
+│   ├── Infusion.php / HydrationLog.php
+│   └── ...
+database/
+├── migrations/   # 14 migraciones
+└── seeders/      # 4 seeders
+routes/
+└── api.php       # 58 rutas
+```
+
+## Deploy en cPanel
+
+1. Subir el proyecto al servidor vía Git o FTP
+2. Ejecutar `composer install --no-dev --optimize-autoloader`
+3. Configurar `.env` con las credenciales de MySQL del hosting
+4. Apuntar el dominio/subdominio a la carpeta `public/`
+5. Ejecutar `php artisan migrate --seed`
+6. Ejecutar `php artisan jwt:secret`
+
+## Documentación adicional
+
+- [`doc/resumen-modelo-er.md`](doc/resumen-modelo-er.md) – Modelo ER completo con diagrama Mermaid
+- [`doc/actualizaciones-api.md`](doc/actualizaciones-api.md) – Detalle de todas las actualizaciones (SRS + hidratación)
+
+## Aviso legal
+
+> Esta aplicación no reemplaza la indicación médica profesional. Es una herramienta de apoyo y educación. Consulte siempre a su médico para decisiones sobre su tratamiento.
