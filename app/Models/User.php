@@ -2,43 +2,73 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class User extends Authenticatable
+class User extends Authenticatable implements JWTSubject
 {
     use HasFactory, Notifiable;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
     protected $fillable = [
         'name',
         'email',
         'password',
+        'age',
+        'gender',
+        'weight',
+        'height',
+        'activity_level',
+        'hta_level',
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
+        'weight' => 'decimal:2',
+        'height' => 'decimal:2',
     ];
+
+    // JWT
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    public function getJWTCustomClaims()
+    {
+        return [];
+    }
+
+    // Relaciones
+    public function bloodPressureRecords()
+    {
+        return $this->hasMany(BloodPressureRecord::class);
+    }
+
+    public function foodLogs()
+    {
+        return $this->hasMany(FoodLog::class);
+    }
+
+    public function mealPlans()
+    {
+        return $this->hasMany(MealPlan::class);
+    }
+
+    public function medications()
+    {
+        return $this->hasMany(Medication::class);
+    }
+
+    public function habitLogs()
+    {
+        return $this->hasMany(HabitLog::class);
+    }
 }
