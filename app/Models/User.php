@@ -21,6 +21,10 @@ class User extends Authenticatable implements JWTSubject
         'height',
         'activity_level',
         'hta_level',
+        'initial_systolic',
+        'initial_diastolic',
+        'food_restrictions',
+        'onboarding_completed',
     ];
 
     protected $hidden = [
@@ -33,6 +37,7 @@ class User extends Authenticatable implements JWTSubject
         'password' => 'hashed',
         'weight' => 'decimal:2',
         'height' => 'decimal:2',
+        'onboarding_completed' => 'boolean',
     ];
 
     // JWT
