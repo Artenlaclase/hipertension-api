@@ -14,5 +14,12 @@ class EducationalContent extends Model
         'content',
         'topic',
         'level',
+        'order',
+        'is_premium',
+    ];
+
+    protected $casts = [
+        'is_premium' => 'boolean',
+        'order'      => 'integer',
     ];
 }
