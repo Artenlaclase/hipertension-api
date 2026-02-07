@@ -76,4 +76,9 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->hasMany(HabitLog::class);
     }
+
+    public function hydrationLogs()
+    {
+        return $this->hasMany(HydrationLog::class);
+    }
 }

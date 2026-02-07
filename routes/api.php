@@ -16,6 +16,8 @@ use App\Http\Controllers\HabitLogController;
 use App\Http\Controllers\HabitStreakController;
 use App\Http\Controllers\NutritionalRecommendationController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\InfusionController;
+use App\Http\Controllers\HydrationLogController;
 
 /*
 |--------------------------------------------------------------------------
@@ -99,4 +101,15 @@ Route::middleware('auth:api')->group(function () {
     // ── Rachas de hábitos (RF-08) ───────────────────────────────────
     Route::get('habit-streaks',          [HabitStreakController::class, 'index']);
     Route::get('habit-streaks/{habit}',  [HabitStreakController::class, 'show']);
+
+    // ── Infusiones / catálogo (Hidratación) ─────────────────────────
+    Route::get('infusions',              [InfusionController::class, 'index']);
+    Route::get('infusions/{infusion}',   [InfusionController::class, 'show']);
+    Route::post('infusions',             [InfusionController::class, 'store']);
+
+    // ── Registro de hidratación ─────────────────────────────────────
+    Route::get('hydration-logs',         [HydrationLogController::class, 'index']);
+    Route::post('hydration-logs',        [HydrationLogController::class, 'store']);
+    Route::delete('hydration-logs/{hydration_log}', [HydrationLogController::class, 'destroy']);
+    Route::get('hydration-summary',      [HydrationLogController::class, 'summary']);
 });

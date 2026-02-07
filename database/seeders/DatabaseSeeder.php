@@ -12,6 +12,7 @@ class DatabaseSeeder extends Seeder
             FoodSeeder::class,
             HabitSeeder::class,
             EducationalContentSeeder::class,
+            InfusionSeeder::class,
         ]);
     }
 }
