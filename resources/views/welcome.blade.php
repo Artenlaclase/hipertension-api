@@ -1,5 +1,35 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hipertensión API</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f8fafc; color: #334155; display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+        .card { background: #fff; border-radius: 12px; box-shadow: 0 4px 24px rgba(0,0,0,.08); padding: 3rem; max-width: 520px; text-align: center; }
+        h1 { font-size: 1.8rem; margin-bottom: .5rem; color: #1e293b; }
+        .badge { display: inline-block; background: #dbeafe; color: #1d4ed8; padding: .25rem .75rem; border-radius: 999px; font-size: .8rem; font-weight: 600; margin-bottom: 1.5rem; }
+        p { color: #64748b; line-height: 1.6; margin-bottom: 1.5rem; }
+        .endpoint { background: #f1f5f9; border-radius: 8px; padding: .6rem 1rem; font-family: monospace; font-size: .9rem; color: #475569; margin-bottom: .5rem; }
+        .footer { margin-top: 2rem; font-size: .75rem; color: #94a3b8; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>🫀 Hipertensión API</h1>
+        <span class="badge">Laravel {{ app()->version() }} · JWT</span>
+        <p>API REST para la aplicación móvil de nutrición y control de hipertensión arterial.</p>
+        <div class="endpoint">POST /api/register</div>
+        <div class="endpoint">POST /api/login</div>
+        <div class="endpoint">GET /api/disclaimer</div>
+        <div class="footer">
+            Esta aplicación no reemplaza la indicación médica profesional.<br>
+            Consulte siempre a su médico.
+        </div>
+    </div>
+</body>
+</html>
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
