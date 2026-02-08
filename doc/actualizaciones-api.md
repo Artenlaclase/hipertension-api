@@ -22,6 +22,7 @@
 11. [Seeders](#11-seeders)
 12. [Listado completo de endpoints](#12-listado-completo-de-endpoints)
 13. [Diagrama de arquitectura](#13-diagrama-de-arquitectura)
+14. [Seguridad: JWT Token y Refresh](#14-seguridad-jwt-token-y-refresh)
 
 ---
 
@@ -646,6 +647,92 @@ erDiagram
 | RF-10 | Dashboard + historial | ✅ | `GET /api/dashboard` |
 | RNF-05 | Disclaimer legal | ✅ | `GET /api/disclaimer` |
 | – | Hidratación e infusiones | ✅ | `GET /api/hydration-summary` |
+| RNF-02 | Seguridad JWT (token + refresh) | ✅ | `POST /api/login`, `POST /api/refresh` |
+
+---
+
+## 14. Seguridad: JWT Token y Refresh
+
+### Configuración aplicada
+
+| Variable | Valor anterior | Valor actual | Motivo |
+|----------|---------------|--------------|--------|
+| `JWT_SECRET` | ❌ No existía | ✅ Generado | Sin secret los tokens no se pueden firmar |
+| `JWT_TTL` | 60 min (1 hora) | **1440 min (24 horas)** | 1 hora es muy corto para app móvil |
+| `JWT_REFRESH_TTL` | 20160 min (14 días) | **43200 min (30 días)** | Ventana amplia para evitar re-login frecuente |
+
+### Flujo de autenticación
+
+```mermaid
+sequenceDiagram
+    participant F as Flutter
+    participant A as API (Laravel)
+
+    F->>A: POST /api/login {email, password}
+    A-->>F: {access_token, expires_in: 86400, expires_at, user}
+
+    Note over F: Guardar token + expires_at en storage seguro
+
+    F->>A: GET /api/dashboard (Bearer token)
+    A-->>F: 200 OK + datos
+
+    Note over F: Token expira después de 24h
+
+    F->>A: GET /api/dashboard (Bearer token expirado)
+    A-->>F: 401 Unauthorized
+
+    F->>A: POST /api/refresh (Bearer token expirado)
+    A-->>F: {access_token (nuevo), expires_in: 86400, expires_at}
+
+    Note over F: Si refresh_ttl (30 días) también expiró:
+
+    F->>A: POST /api/refresh (token muy antiguo)
+    A-->>F: 401 {error: "refresh_expired"}
+
+    Note over F: Redirigir a pantalla de login
+```
+
+### Formato estandarizado de respuesta con token
+
+`register`, `login` y `refresh` ahora retornan:
+
+```json
+{
+  "access_token": "eyJ0eXAiOiJKV1Qi...",
+  "token_type": "bearer",
+  "expires_in": 86400,
+  "expires_at": "2026-02-08T15:30:00+00:00",
+  "user": { "id": 1, "name": "...", ... },
+  "onboarding_completed": false
+}
+```
+
+| Campo | Tipo | Para qué |
+|-------|------|----------|
+| `access_token` | string | Token JWT para enviar en `Authorization: Bearer` |
+| `token_type` | string | Siempre `"bearer"` |
+| `expires_in` | integer | Segundos hasta expiración (86400 = 24h) |
+| `expires_at` | string | Fecha/hora ISO 8601 de expiración exacta |
+| `user` | object | Datos completos del usuario autenticado |
+| `onboarding_completed` | boolean | Si el usuario ya completó el onboarding (solo login) |
+
+### Manejo de errores en refresh
+
+| Código | `error` | Significado | Acción Flutter |
+|--------|---------|-------------|----------------|
+| 401 | `refresh_expired` | Token fuera de ventana de 30 días | Ir a login |
+| 401 | `token_invalid` | Token corrupto o manipulado | Limpiar storage → login |
+| 401 | `token_error` | Error inesperado de JWT | Reintentar o login |
+
+### Variables de entorno (`.env.example`)
+
+```dotenv
+# JWT (tymon/jwt-auth)
+# Generar con: php artisan jwt:secret
+JWT_SECRET=
+JWT_TTL=1440
+JWT_REFRESH_TTL=43200
+```
 
 ---
 

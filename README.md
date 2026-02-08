@@ -50,18 +50,59 @@ La API estará disponible en `http://localhost:8000/api`.
 
 Se utiliza **JWT** (JSON Web Token) mediante el paquete `tymon/jwt-auth`.
 
+### Endpoints
+
 ```
 POST /api/register   → Registro (retorna token)
-POST /api/login      → Login (retorna token + onboarding_completed)
+POST /api/login      → Login (retorna token + user + onboarding_completed)
 POST /api/refresh    → Renovar token
 POST /api/logout     → Cerrar sesión
+GET  /api/me         → Datos del usuario autenticado
 ```
 
-Incluir el token en cada petición protegida:
+### Configuración de expiración
 
+| Variable | Valor | Descripción |
+|----------|-------|-------------|
+| `JWT_TTL` | 1440 min (24h) | Tiempo de vida del token |
+| `JWT_REFRESH_TTL` | 43200 min (30 días) | Ventana para renovar un token expirado |
+
+### Formato de respuesta con token
+
+Todos los endpoints que emiten token (`register`, `login`, `refresh`) devuelven:
+
+```json
+{
+  "access_token": "eyJ0eXAiOiJKV1Qi...",
+  "token_type": "bearer",
+  "expires_in": 86400,
+  "expires_at": "2026-02-08T15:30:00+00:00",
+  "user": { ... },
+  "onboarding_completed": false
+}
 ```
-Authorization: Bearer <token>
+
+- `expires_in` → segundos hasta expiración (para programar refresh en Flutter)
+- `expires_at` → fecha/hora exacta de expiración (ISO 8601)
+
+### Uso en Flutter
+
+```dart
+// Incluir en cada petición protegida:
+Authorization: Bearer <access_token>
+
+// Cuando el token expire (401), llamar:
+POST /api/refresh  (con el token expirado en el header)
+// Si refresh_ttl también expiró → 401 con error "refresh_expired" → redirigir a login
 ```
+
+### Manejo de errores de token
+
+| Código | Error | Acción en Flutter |
+|--------|-------|-------------------|
+| 401 | `refresh_expired` | Sesión expirada completamente → pantalla de login |
+| 401 | `token_invalid` | Token corrupto → limpiar storage → login |
+| 401 | `token_error` | Error inesperado → reintentar o login |
 
 ## Módulos funcionales
 
