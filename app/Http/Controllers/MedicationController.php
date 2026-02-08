@@ -9,7 +9,9 @@ class MedicationController extends Controller
 {
     public function index()
     {
-        $medications = auth()->user()->medications()
+        /** @var \App\Models\User $user */
+        $user = auth()->user();
+        $medications = $user->medications()
             ->with('alarms')
             ->get();
 
@@ -24,7 +26,9 @@ class MedicationController extends Controller
             'instructions' => 'nullable|string',
         ]);
 
-        $medication = auth()->user()->medications()->create($request->only([
+        /** @var \App\Models\User $user */
+        $user = auth()->user();
+        $medication = $user->medications()->create($request->only([
             'name', 'dosage', 'instructions'
         ]));
 

@@ -14,6 +14,7 @@ class NutritionalRecommendationController extends Controller
 {
     public function index()
     {
+        /** @var \App\Models\User $user */
         $user = auth()->user();
 
         // Obtener última lectura de PA
