@@ -114,6 +114,7 @@ class AuthController extends Controller
             'food_restrictions' => 'nullable|string|max:500',
         ]);
 
+        /** @var \App\Models\User $user */
         $user = auth()->user();
         $user->update(array_merge(
             $request->only([
@@ -151,6 +152,7 @@ class AuthController extends Controller
             'food_restrictions' => 'nullable|string|max:500',
         ]);
 
+        /** @var \App\Models\User $user */
         $user = auth()->user();
         $user->update($request->only([
             'name', 'age', 'gender', 'weight', 'height',
