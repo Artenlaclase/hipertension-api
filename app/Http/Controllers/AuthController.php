@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\Facades\JWTAuth;
+use Tymon\JWTAuth\Exceptions\JWTException;
+use Tymon\JWTAuth\Exceptions\TokenExpiredException;
+use Tymon\JWTAuth\Exceptions\TokenInvalidException;
 use App\Models\User;
 
 class AuthController extends Controller
@@ -24,7 +27,10 @@ class AuthController extends Controller
 
         $token = JWTAuth::fromUser($user);
 
-        return response()->json(compact('user', 'token'), 201);
+        return response()->json(array_merge(
+            $this->tokenPayload($token),
+            ['user' => $user]
+        ), 201);
     }
 
     public function login(Request $request)
@@ -37,10 +43,13 @@ class AuthController extends Controller
 
         $user = auth()->user();
 
-        return response()->json([
-            'token' => $token,
-            'onboarding_completed' => $user->onboarding_completed,
-        ]);
+        return response()->json(array_merge(
+            $this->tokenPayload($token),
+            [
+                'user' => $user,
+                'onboarding_completed' => $user->onboarding_completed,
+            ]
+        ));
     }
 
     public function me()
@@ -54,10 +63,37 @@ class AuthController extends Controller
         return response()->json(['message' => 'Sesión cerrada']);
     }
 
+    /**
+     * Renovar token JWT.
+     *
+     * Si el token expiró pero está dentro de la ventana de refresh (30 días),
+     * se emite uno nuevo. Si está fuera de la ventana, se retorna 401.
+     */
     public function refresh()
     {
-        $token = JWTAuth::refresh(JWTAuth::getToken());
-        return response()->json(compact('token'));
+        try {
+            $token = JWTAuth::refresh(JWTAuth::getToken());
+
+            return response()->json(array_merge(
+                $this->tokenPayload($token),
+                ['message' => 'Token renovado']
+            ));
+        } catch (TokenExpiredException $e) {
+            return response()->json([
+                'error'   => 'refresh_expired',
+                'message' => 'La sesión ha expirado completamente. Inicie sesión nuevamente.',
+            ], 401);
+        } catch (TokenInvalidException $e) {
+            return response()->json([
+                'error'   => 'token_invalid',
+                'message' => 'Token inválido.',
+            ], 401);
+        } catch (JWTException $e) {
+            return response()->json([
+                'error'   => 'token_error',
+                'message' => 'No se pudo procesar el token.',
+            ], 401);
+        }
     }
 
     /**
@@ -122,5 +158,19 @@ class AuthController extends Controller
         ]));
 
         return response()->json($user);
+    }
+
+    /* ── Helper: payload estandarizado de token ────────────────────── */
+
+    private function tokenPayload(string $token): array
+    {
+        $ttl = config('jwt.ttl'); // minutos
+
+        return [
+            'access_token' => $token,
+            'token_type'   => 'bearer',
+            'expires_in'   => $ttl * 60,           // segundos (para Flutter)
+            'expires_at'   => now()->addMinutes($ttl)->toIso8601String(),
+        ];
     }
 }
