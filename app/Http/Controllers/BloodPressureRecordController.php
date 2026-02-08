@@ -10,7 +10,9 @@ class BloodPressureRecordController extends Controller
 {
     public function index()
     {
-        $records = auth()->user()->bloodPressureRecords()
+        /** @var \App\Models\User $user */
+        $user = auth()->user();
+        $records = $user->bloodPressureRecords()
             ->orderBy('measured_at', 'desc')
             ->get()
             ->map(fn ($r) => array_merge($r->toArray(), [
@@ -28,7 +30,9 @@ class BloodPressureRecordController extends Controller
             'measured_at' => 'required|date',
         ]);
 
-        $record = auth()->user()->bloodPressureRecords()->create($request->only([
+        /** @var \App\Models\User $user */
+        $user = auth()->user();
+        $record = $user->bloodPressureRecords()->create($request->only([
             'systolic', 'diastolic', 'measured_at'
         ]));
 
@@ -68,6 +72,7 @@ class BloodPressureRecordController extends Controller
             'period' => 'required|in:daily,weekly,monthly',
         ]);
 
+        /** @var \App\Models\User $user */
         $user = auth()->user();
         $period = $request->period;
 
