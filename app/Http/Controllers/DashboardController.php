@@ -12,6 +12,7 @@ class DashboardController extends Controller
 {
     public function index()
     {
+        /** @var \App\Models\User $user */
         $user = auth()->user();
 
         // Última PA + clasificación
@@ -108,6 +109,7 @@ class DashboardController extends Controller
             'to'   => 'sometimes|date',
         ]);
 
+        /** @var \App\Models\User $user */
         $user = auth()->user();
         $from = $request->input('from', Carbon::now()->subMonth()->toDateString());
         $to   = $request->input('to', Carbon::today()->toDateString());
