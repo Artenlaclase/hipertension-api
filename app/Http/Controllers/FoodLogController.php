@@ -9,7 +9,9 @@ class FoodLogController extends Controller
 {
     public function index()
     {
-        $logs = auth()->user()->foodLogs()
+        /** @var \App\Models\User $user */
+        $user = auth()->user();
+        $logs = $user->foodLogs()
             ->with('food')
             ->orderBy('consumed_at', 'desc')
             ->get();
@@ -25,7 +27,9 @@ class FoodLogController extends Controller
             'consumed_at' => 'required|date',
         ]);
 
-        $log = auth()->user()->foodLogs()->create($request->only([
+        /** @var \App\Models\User $user */
+        $user = auth()->user();
+        $log = $user->foodLogs()->create($request->only([
             'food_id', 'portion', 'consumed_at'
         ]));
 

@@ -15,6 +15,7 @@ class MedicationAdherenceController extends Controller
      */
     public function index(Request $request)
     {
+        /** @var \App\Models\User $user */
         $user = auth()->user();
         $period = $request->input('period', 'monthly');
 

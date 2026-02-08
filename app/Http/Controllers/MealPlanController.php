@@ -9,7 +9,9 @@ class MealPlanController extends Controller
 {
     public function index()
     {
-        $plans = auth()->user()->mealPlans()
+        /** @var \App\Models\User $user */
+        $user = auth()->user();
+        $plans = $user->mealPlans()
             ->orderBy('week_start', 'desc')
             ->get();
 
@@ -23,7 +25,9 @@ class MealPlanController extends Controller
             'notes'      => 'nullable|string',
         ]);
 
-        $plan = auth()->user()->mealPlans()->create($request->only([
+        /** @var \App\Models\User $user */
+        $user = auth()->user();
+        $plan = $user->mealPlans()->create($request->only([
             'week_start', 'notes'
         ]));
 

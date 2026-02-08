@@ -9,7 +9,9 @@ class HabitLogController extends Controller
 {
     public function index()
     {
-        $logs = auth()->user()->habitLogs()
+        /** @var \App\Models\User $user */
+        $user = auth()->user();
+        $logs = $user->habitLogs()
             ->with('habit')
             ->orderBy('completed_at', 'desc')
             ->get();
@@ -24,7 +26,9 @@ class HabitLogController extends Controller
             'completed_at' => 'required|date',
         ]);
 
-        $log = auth()->user()->habitLogs()->create($request->only([
+        /** @var \App\Models\User $user */
+        $user = auth()->user();
+        $log = $user->habitLogs()->create($request->only([
             'habit_id', 'completed_at'
         ]));
 
