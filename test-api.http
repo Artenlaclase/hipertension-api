@@ -1,0 +1,658 @@
+###############################################################################
+#  ARCHIVO DE PRUEBAS – API Hipertensión App
+#  Dominio: https://www.api-htapp.raulrosales.net
+#
+#  Instrucciones:
+#  1. Instala la extensión "REST Client" en VS Code para ejecutar estas
+#     peticiones directamente desde el editor (clic en "Send Request").
+#  2. Ejecuta primero "Registro" o "Login" para obtener el token JWT.
+#  3. Copia el token en la variable @token de abajo.
+#  4. Ejecuta las demás peticiones en orden.
+###############################################################################
+
+@baseUrl = https://www.api-htapp.raulrosales.net/api
+
+# ── Pega aquí tu token JWT después de hacer login/register ──────────
+@token = TU_TOKEN_AQUI
+
+
+###############################################################################
+#  1. AUTENTICACIÓN
+###############################################################################
+
+### 1.1 Registro de usuario
+POST {{baseUrl}}/register
+Content-Type: application/json
+
+{
+    "name": "Raúl Rosales",
+    "email": "raul@prueba.com",
+    "password": "password123",
+    "password_confirmation": "password123"
+}
+
+### 1.2 Login
+POST {{baseUrl}}/login
+Content-Type: application/json
+
+{
+    "email": "raul@prueba.com",
+    "password": "password123"
+}
+
+### 1.3 Obtener perfil (requiere token)
+GET {{baseUrl}}/me
+Authorization: Bearer {{token}}
+Accept: application/json
+
+### 1.4 Refresh token
+POST {{baseUrl}}/refresh
+Authorization: Bearer {{token}}
+Accept: application/json
+
+### 1.5 Logout
+POST {{baseUrl}}/logout
+Authorization: Bearer {{token}}
+Accept: application/json
+
+
+###############################################################################
+#  2. ONBOARDING (RF-01)
+###############################################################################
+
+### 2.1 Completar onboarding
+POST {{baseUrl}}/onboarding
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "age": 45,
+    "gender": "masculino",
+    "weight": 82.5,
+    "height": 1.72,
+    "activity_level": "moderado",
+    "hta_level": "estadio_1",
+    "initial_systolic": 145,
+    "initial_diastolic": 92,
+    "food_restrictions": "sin restricciones"
+}
+
+### 2.2 Actualizar perfil
+PUT {{baseUrl}}/profile
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "name": "Raúl A. Rosales",
+    "weight": 80.0,
+    "activity_level": "activo"
+}
+
+
+###############################################################################
+#  3. DISCLAIMER (público – RNF-05)
+###############################################################################
+
+### 3.1 Ver disclaimer
+GET {{baseUrl}}/disclaimer
+Accept: application/json
+
+
+###############################################################################
+#  4. PRESIÓN ARTERIAL (RF-02, RF-03)
+###############################################################################
+
+### 4.1 Registrar presión arterial
+POST {{baseUrl}}/blood-pressure
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "systolic": 138,
+    "diastolic": 88,
+    "pulse": 72,
+    "notes": "Medición matutina en reposo"
+}
+
+### 4.2 Registrar segunda medición
+POST {{baseUrl}}/blood-pressure
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "systolic": 142,
+    "diastolic": 91,
+    "pulse": 78,
+    "notes": "Medición vespertina después de caminar"
+}
+
+### 4.3 Registrar tercera medición (presión alta)
+POST {{baseUrl}}/blood-pressure
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "systolic": 160,
+    "diastolic": 100,
+    "pulse": 85,
+    "notes": "Medición después de estrés laboral"
+}
+
+### 4.4 Listar registros de presión arterial
+GET {{baseUrl}}/blood-pressure
+Authorization: Bearer {{token}}
+Accept: application/json
+
+### 4.5 Ver un registro específico (cambia el ID)
+GET {{baseUrl}}/blood-pressure/1
+Authorization: Bearer {{token}}
+Accept: application/json
+
+### 4.6 Estadísticas de presión arterial
+GET {{baseUrl}}/blood-pressure-stats
+Authorization: Bearer {{token}}
+Accept: application/json
+
+### 4.7 Eliminar un registro (cambia el ID)
+DELETE {{baseUrl}}/blood-pressure/3
+Authorization: Bearer {{token}}
+Accept: application/json
+
+
+###############################################################################
+#  5. DASHBOARD (RF-10)
+###############################################################################
+
+### 5.1 Dashboard general
+GET {{baseUrl}}/dashboard
+Authorization: Bearer {{token}}
+Accept: application/json
+
+### 5.2 Historial
+GET {{baseUrl}}/history
+Authorization: Bearer {{token}}
+Accept: application/json
+
+
+###############################################################################
+#  6. RECOMENDACIONES NUTRICIONALES (RF-05)
+###############################################################################
+
+### 6.1 Obtener recomendaciones
+GET {{baseUrl}}/nutritional-recommendations
+Authorization: Bearer {{token}}
+Accept: application/json
+
+
+###############################################################################
+#  7. ALIMENTOS / CATÁLOGO (RF-06)
+###############################################################################
+
+### 7.1 Listar alimentos
+GET {{baseUrl}}/foods
+Authorization: Bearer {{token}}
+Accept: application/json
+
+### 7.2 Crear alimento personalizado
+POST {{baseUrl}}/foods
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "name": "Avena integral",
+    "category": "cereales",
+    "calories_per_100g": 389,
+    "sodium_mg_per_100g": 2,
+    "potassium_mg_per_100g": 429,
+    "is_recommended": true,
+    "description": "Cereal integral rico en fibra soluble, ayuda a reducir el colesterol"
+}
+
+### 7.3 Ver alimento específico (cambia el ID)
+GET {{baseUrl}}/foods/1
+Authorization: Bearer {{token}}
+Accept: application/json
+
+
+###############################################################################
+#  8. REGISTRO DE CONSUMO DE ALIMENTOS (RF-06)
+###############################################################################
+
+### 8.1 Registrar consumo (desayuno)
+POST {{baseUrl}}/food-logs
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "food_id": 1,
+    "meal_type": "desayuno",
+    "quantity_grams": 150,
+    "notes": "Avena con frutas"
+}
+
+### 8.2 Registrar consumo (almuerzo)
+POST {{baseUrl}}/food-logs
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "food_id": 2,
+    "meal_type": "almuerzo",
+    "quantity_grams": 200,
+    "notes": "Pechuga de pollo a la plancha"
+}
+
+### 8.3 Listar registros de consumo
+GET {{baseUrl}}/food-logs
+Authorization: Bearer {{token}}
+Accept: application/json
+
+### 8.4 Eliminar registro de consumo (cambia el ID)
+DELETE {{baseUrl}}/food-logs/1
+Authorization: Bearer {{token}}
+Accept: application/json
+
+
+###############################################################################
+#  9. PLAN ALIMENTICIO (RF-04)
+###############################################################################
+
+### 9.1 Crear plan alimenticio
+POST {{baseUrl}}/meal-plans
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "name": "Plan DASH semanal",
+    "description": "Plan basado en la dieta DASH para controlar hipertensión",
+    "day_of_week": "lunes",
+    "meal_type": "desayuno",
+    "food_items": "Avena integral con banana, yogur griego sin azúcar, té verde",
+    "calories": 450,
+    "sodium_mg": 180
+}
+
+### 9.2 Crear otro plan alimenticio
+POST {{baseUrl}}/meal-plans
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "name": "Plan DASH semanal",
+    "description": "Almuerzo balanceado bajo en sodio",
+    "day_of_week": "lunes",
+    "meal_type": "almuerzo",
+    "food_items": "Salmón al horno con brócoli y arroz integral, ensalada de espinacas",
+    "calories": 620,
+    "sodium_mg": 350
+}
+
+### 9.3 Listar planes alimenticios
+GET {{baseUrl}}/meal-plans
+Authorization: Bearer {{token}}
+Accept: application/json
+
+### 9.4 Ver plan específico (cambia el ID)
+GET {{baseUrl}}/meal-plans/1
+Authorization: Bearer {{token}}
+Accept: application/json
+
+### 9.5 Actualizar plan alimenticio (cambia el ID)
+PUT {{baseUrl}}/meal-plans/1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "calories": 420,
+    "sodium_mg": 150,
+    "food_items": "Avena integral con arándanos, yogur griego sin azúcar, infusión de hibisco"
+}
+
+### 9.6 Eliminar plan alimenticio (cambia el ID)
+DELETE {{baseUrl}}/meal-plans/2
+Authorization: Bearer {{token}}
+Accept: application/json
+
+
+###############################################################################
+#  10. MEDICAMENTOS (RF-09.1)
+###############################################################################
+
+### 10.1 Crear medicamento
+POST {{baseUrl}}/medications
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "name": "Losartán",
+    "dosage": "50mg",
+    "frequency": "diario",
+    "instructions": "Tomar en ayunas con un vaso de agua",
+    "start_date": "2026-02-01",
+    "notes": "Prescrito por Dr. García"
+}
+
+### 10.2 Crear segundo medicamento
+POST {{baseUrl}}/medications
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "name": "Amlodipino",
+    "dosage": "5mg",
+    "frequency": "diario",
+    "instructions": "Tomar por la noche",
+    "start_date": "2026-02-01",
+    "notes": "Complemento para control de presión"
+}
+
+### 10.3 Listar medicamentos
+GET {{baseUrl}}/medications
+Authorization: Bearer {{token}}
+Accept: application/json
+
+### 10.4 Ver medicamento específico (cambia el ID)
+GET {{baseUrl}}/medications/1
+Authorization: Bearer {{token}}
+Accept: application/json
+
+### 10.5 Actualizar medicamento (cambia el ID)
+PUT {{baseUrl}}/medications/1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "dosage": "100mg",
+    "instructions": "Tomar en ayunas, aumentada la dosis por indicación médica"
+}
+
+### 10.6 Eliminar medicamento (cambia el ID)
+DELETE {{baseUrl}}/medications/2
+Authorization: Bearer {{token}}
+Accept: application/json
+
+
+###############################################################################
+#  11. ALARMAS DE MEDICAMENTOS (RF-09.2)
+###############################################################################
+
+### 11.1 Crear alarma para medicamento (cambia el ID del medicamento)
+POST {{baseUrl}}/medications/1/alarms
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "time": "07:00",
+    "days": ["lunes", "martes", "miercoles", "jueves", "viernes", "sabado", "domingo"],
+    "is_active": true,
+    "label": "Tomar Losartán en ayunas"
+}
+
+### 11.2 Actualizar alarma (cambia el ID de la alarma)
+PUT {{baseUrl}}/medication-alarms/1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "time": "06:30",
+    "label": "Tomar Losartán antes del desayuno"
+}
+
+### 11.3 Eliminar alarma (cambia el ID)
+DELETE {{baseUrl}}/medication-alarms/1
+Authorization: Bearer {{token}}
+Accept: application/json
+
+
+###############################################################################
+#  12. REGISTRO DE TOMA DE MEDICAMENTO (RF-09.3)
+###############################################################################
+
+### 12.1 Registrar toma de medicamento
+POST {{baseUrl}}/medications/1/logs
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "taken_at": "2026-02-08 07:15:00",
+    "status": "tomado",
+    "notes": "Tomado con el desayuno"
+}
+
+### 12.2 Registrar toma omitida
+POST {{baseUrl}}/medications/1/logs
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "taken_at": "2026-02-07 07:00:00",
+    "status": "omitido",
+    "notes": "Se me olvidó por la mañana"
+}
+
+### 12.3 Listar registros de toma del medicamento
+GET {{baseUrl}}/medications/1/logs
+Authorization: Bearer {{token}}
+Accept: application/json
+
+
+###############################################################################
+#  13. ADHERENCIA A MEDICAMENTOS (RF-09.4)
+###############################################################################
+
+### 13.1 Ver adherencia
+GET {{baseUrl}}/medication-adherence
+Authorization: Bearer {{token}}
+Accept: application/json
+
+
+###############################################################################
+#  14. CONTENIDO EDUCATIVO (RF-07)
+###############################################################################
+
+### 14.1 Listar contenido educativo
+GET {{baseUrl}}/educational-contents
+Authorization: Bearer {{token}}
+Accept: application/json
+
+### 14.2 Ver contenido específico (cambia el ID)
+GET {{baseUrl}}/educational-contents/1
+Authorization: Bearer {{token}}
+Accept: application/json
+
+
+###############################################################################
+#  15. HÁBITOS SALUDABLES (RF-08)
+###############################################################################
+
+### 15.1 Listar hábitos disponibles
+GET {{baseUrl}}/habits
+Authorization: Bearer {{token}}
+Accept: application/json
+
+### 15.2 Ver hábito específico (cambia el ID)
+GET {{baseUrl}}/habits/1
+Authorization: Bearer {{token}}
+Accept: application/json
+
+
+###############################################################################
+#  16. SEGUIMIENTO DE HÁBITOS (RF-08)
+###############################################################################
+
+### 16.1 Registrar hábito completado
+POST {{baseUrl}}/habit-logs
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "habit_id": 1,
+    "notes": "Caminata de 30 minutos por el parque"
+}
+
+### 16.2 Registrar otro hábito
+POST {{baseUrl}}/habit-logs
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "habit_id": 2,
+    "notes": "Meditación guiada de 15 minutos"
+}
+
+### 16.3 Listar registros de hábitos
+GET {{baseUrl}}/habit-logs
+Authorization: Bearer {{token}}
+Accept: application/json
+
+### 16.4 Eliminar registro de hábito (cambia el ID)
+DELETE {{baseUrl}}/habit-logs/1
+Authorization: Bearer {{token}}
+Accept: application/json
+
+
+###############################################################################
+#  17. RACHAS DE HÁBITOS (RF-08)
+###############################################################################
+
+### 17.1 Ver todas las rachas
+GET {{baseUrl}}/habit-streaks
+Authorization: Bearer {{token}}
+Accept: application/json
+
+### 17.2 Ver racha de un hábito específico (cambia el ID)
+GET {{baseUrl}}/habit-streaks/1
+Authorization: Bearer {{token}}
+Accept: application/json
+
+
+###############################################################################
+#  18. INFUSIONES / CATÁLOGO (Hidratación)
+###############################################################################
+
+### 18.1 Listar infusiones disponibles
+GET {{baseUrl}}/infusions
+Authorization: Bearer {{token}}
+Accept: application/json
+
+### 18.2 Crear infusión personalizada
+POST {{baseUrl}}/infusions
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "name": "Infusión de hibisco (jamaica)",
+    "description": "Rica en antioxidantes, ayuda a reducir la presión arterial",
+    "benefits": "Reduce presión arterial, antioxidante, antiinflamatorio",
+    "preparation": "Hervir agua, agregar flores de hibisco, dejar reposar 5-10 minutos",
+    "is_recommended_for_hta": true
+}
+
+### 18.3 Ver infusión específica (cambia el ID)
+GET {{baseUrl}}/infusions/1
+Authorization: Bearer {{token}}
+Accept: application/json
+
+
+###############################################################################
+#  19. REGISTRO DE HIDRATACIÓN
+###############################################################################
+
+### 19.1 Registrar vaso de agua
+POST {{baseUrl}}/hydration-logs
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "type": "agua",
+    "quantity_ml": 250,
+    "notes": "Vaso de agua al despertar"
+}
+
+### 19.2 Registrar infusión
+POST {{baseUrl}}/hydration-logs
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "type": "infusion",
+    "infusion_id": 1,
+    "quantity_ml": 200,
+    "notes": "Té de hibisco en la tarde"
+}
+
+### 19.3 Registrar más agua
+POST {{baseUrl}}/hydration-logs
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "type": "agua",
+    "quantity_ml": 500,
+    "notes": "Botella de agua durante ejercicio"
+}
+
+### 19.4 Listar registros de hidratación
+GET {{baseUrl}}/hydration-logs
+Authorization: Bearer {{token}}
+Accept: application/json
+
+### 19.5 Resumen de hidratación del día
+GET {{baseUrl}}/hydration-summary
+Authorization: Bearer {{token}}
+Accept: application/json
+
+### 19.6 Eliminar registro de hidratación (cambia el ID)
+DELETE {{baseUrl}}/hydration-logs/1
+Authorization: Bearer {{token}}
+Accept: application/json
+
+
+###############################################################################
+#  20. PRUEBAS DE ERROR (validaciones)
+###############################################################################
+
+### 20.1 Login con credenciales incorrectas
+POST {{baseUrl}}/login
+Content-Type: application/json
+
+{
+    "email": "noexiste@prueba.com",
+    "password": "wrongpassword"
+}
+
+### 20.2 Registro con email duplicado (ejecutar después de 1.1)
+POST {{baseUrl}}/register
+Content-Type: application/json
+
+{
+    "name": "Otro Usuario",
+    "email": "raul@prueba.com",
+    "password": "password123",
+    "password_confirmation": "password123"
+}
+
+### 20.3 Acceso sin token (debe retornar 401)
+GET {{baseUrl}}/me
+Accept: application/json
+
+### 20.4 Presión arterial con datos inválidos
+POST {{baseUrl}}/blood-pressure
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "systolic": -10,
+    "diastolic": 999
+}
+
+### 20.5 Registro con passwords que no coinciden
+POST {{baseUrl}}/register
+Content-Type: application/json
+
+{
+    "name": "Test Error",
+    "email": "error@prueba.com",
+    "password": "password123",
+    "password_confirmation": "otrapassword"
+}

@@ -1,0 +1,1051 @@
+{
+    "client": "Thunder Client",
+    "collectionName": "Hipertensión API - Pruebas",
+    "dateExported": "2026-02-08T00:00:00.000Z",
+    "version": "1.1",
+    "folders": [
+        { "_id": "f1", "name": "1. Autenticación", "containerId": "", "created": "2026-02-08T00:00:00.000Z", "sortNum": 10000 },
+        { "_id": "f2", "name": "2. Onboarding y Perfil", "containerId": "", "created": "2026-02-08T00:00:00.000Z", "sortNum": 20000 },
+        { "_id": "f3", "name": "3. Presión Arterial", "containerId": "", "created": "2026-02-08T00:00:00.000Z", "sortNum": 30000 },
+        { "_id": "f4", "name": "4. Dashboard", "containerId": "", "created": "2026-02-08T00:00:00.000Z", "sortNum": 40000 },
+        { "_id": "f5", "name": "5. Alimentos y Consumo", "containerId": "", "created": "2026-02-08T00:00:00.000Z", "sortNum": 50000 },
+        { "_id": "f6", "name": "6. Plan Alimenticio", "containerId": "", "created": "2026-02-08T00:00:00.000Z", "sortNum": 60000 },
+        { "_id": "f7", "name": "7. Medicamentos", "containerId": "", "created": "2026-02-08T00:00:00.000Z", "sortNum": 70000 },
+        { "_id": "f8", "name": "8. Alarmas Medicamentos", "containerId": "", "created": "2026-02-08T00:00:00.000Z", "sortNum": 80000 },
+        { "_id": "f9", "name": "9. Registro Toma y Adherencia", "containerId": "", "created": "2026-02-08T00:00:00.000Z", "sortNum": 90000 },
+        { "_id": "f10", "name": "10. Contenido Educativo", "containerId": "", "created": "2026-02-08T00:00:00.000Z", "sortNum": 100000 },
+        { "_id": "f11", "name": "11. Hábitos y Rachas", "containerId": "", "created": "2026-02-08T00:00:00.000Z", "sortNum": 110000 },
+        { "_id": "f12", "name": "12. Infusiones e Hidratación", "containerId": "", "created": "2026-02-08T00:00:00.000Z", "sortNum": 120000 },
+        { "_id": "f13", "name": "13. Pruebas de Error", "containerId": "", "created": "2026-02-08T00:00:00.000Z", "sortNum": 130000 }
+    ],
+    "requests": [
+        {
+            "_id": "r1",
+            "colId": "",
+            "containerId": "f1",
+            "name": "1.1 Registro de usuario",
+            "url": "{{baseUrl}}/register",
+            "method": "POST",
+            "sortNum": 10000,
+            "created": "2026-02-08T00:00:00.000Z",
+            "modified": "2026-02-08T00:00:00.000Z",
+            "headers": [
+                { "name": "Content-Type", "value": "application/json" },
+                { "name": "Accept", "value": "application/json" }
+            ],
+            "body": {
+                "type": "json",
+                "raw": "{\n    \"name\": \"Raúl Rosales\",\n    \"email\": \"raul@prueba.com\",\n    \"password\": \"password123\",\n    \"password_confirmation\": \"password123\"\n}"
+            }
+        },
+        {
+            "_id": "r2",
+            "colId": "",
+            "containerId": "f1",
+            "name": "1.2 Login",
+            "url": "{{baseUrl}}/login",
+            "method": "POST",
+            "sortNum": 20000,
+            "created": "2026-02-08T00:00:00.000Z",
+            "modified": "2026-02-08T00:00:00.000Z",
+            "headers": [
+                { "name": "Content-Type", "value": "application/json" },
+                { "name": "Accept", "value": "application/json" }
+            ],
+            "body": {
+                "type": "json",
+                "raw": "{\n    \"email\": \"raul@prueba.com\",\n    \"password\": \"password123\"\n}"
+            }
+        },
+        {
+            "_id": "r3",
+            "colId": "",
+            "containerId": "f1",
+            "name": "1.3 Obtener perfil (me)",
+            "url": "{{baseUrl}}/me",
+            "method": "GET",
+            "sortNum": 30000,
+            "created": "2026-02-08T00:00:00.000Z",
+            "modified": "2026-02-08T00:00:00.000Z",
+            "headers": [
+                { "name": "Accept", "value": "application/json" },
+                { "name": "Authorization", "value": "Bearer {{token}}" }
+            ]
+        },
+        {
+            "_id": "r4",
+            "colId": "",
+            "containerId": "f1",
+            "name": "1.4 Refresh token",
+            "url": "{{baseUrl}}/refresh",
+            "method": "POST",
+            "sortNum": 40000,
+            "created": "2026-02-08T00:00:00.000Z",
+            "modified": "2026-02-08T00:00:00.000Z",
+            "headers": [
+                { "name": "Accept", "value": "application/json" },
+                { "name": "Authorization", "value": "Bearer {{token}}" }
+            ]
+        },
+        {
+            "_id": "r5",
+            "colId": "",
+            "containerId": "f1",
+            "name": "1.5 Logout",
+            "url": "{{baseUrl}}/logout",
+            "method": "POST",
+            "sortNum": 50000,
+            "created": "2026-02-08T00:00:00.000Z",
+            "modified": "2026-02-08T00:00:00.000Z",
+            "headers": [
+                { "name": "Accept", "value": "application/json" },
+                { "name": "Authorization", "value": "Bearer {{token}}" }
+            ]
+        },
+        {
+            "_id": "r6",
+            "colId": "",
+            "containerId": "f1",
+            "name": "1.6 Disclaimer (público)",
+            "url": "{{baseUrl}}/disclaimer",
+            "method": "GET",
+            "sortNum": 60000,
+            "created": "2026-02-08T00:00:00.000Z",
+            "modified": "2026-02-08T00:00:00.000Z",
+            "headers": [
+                { "name": "Accept", "value": "application/json" }
+            ]
+        },
+        {
+            "_id": "r10",
+            "colId": "",
+            "containerId": "f2",
+            "name": "2.1 Completar onboarding",
+            "url": "{{baseUrl}}/onboarding",
+            "method": "POST",
+            "sortNum": 10000,
+            "created": "2026-02-08T00:00:00.000Z",
+            "modified": "2026-02-08T00:00:00.000Z",
+            "headers": [
+                { "name": "Content-Type", "value": "application/json" },
+                { "name": "Accept", "value": "application/json" },
+                { "name": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+                "type": "json",
+                "raw": "{\n    \"age\": 45,\n    \"gender\": \"masculino\",\n    \"weight\": 82.5,\n    \"height\": 1.72,\n    \"activity_level\": \"moderado\",\n    \"hta_level\": \"estadio_1\",\n    \"initial_systolic\": 145,\n    \"initial_diastolic\": 92,\n    \"food_restrictions\": \"sin restricciones\"\n}"
+            }
+        },
+        {
+            "_id": "r11",
+            "colId": "",
+            "containerId": "f2",
+            "name": "2.2 Actualizar perfil",
+            "url": "{{baseUrl}}/profile",
+            "method": "PUT",
+            "sortNum": 20000,
+            "created": "2026-02-08T00:00:00.000Z",
+            "modified": "2026-02-08T00:00:00.000Z",
+            "headers": [
+                { "name": "Content-Type", "value": "application/json" },
+                { "name": "Accept", "value": "application/json" },
+                { "name": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+                "type": "json",
+                "raw": "{\n    \"name\": \"Raúl A. Rosales\",\n    \"weight\": 80.0,\n    \"activity_level\": \"activo\"\n}"
+            }
+        },
+        {
+            "_id": "r20",
+            "colId": "",
+            "containerId": "f3",
+            "name": "3.1 Registrar presión arterial",
+            "url": "{{baseUrl}}/blood-pressure",
+            "method": "POST",
+            "sortNum": 10000,
+            "created": "2026-02-08T00:00:00.000Z",
+            "modified": "2026-02-08T00:00:00.000Z",
+            "headers": [
+                { "name": "Content-Type", "value": "application/json" },
+                { "name": "Accept", "value": "application/json" },
+                { "name": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+                "type": "json",
+                "raw": "{\n    \"systolic\": 138,\n    \"diastolic\": 88,\n    \"pulse\": 72,\n    \"notes\": \"Medición matutina en reposo\"\n}"
+            }
+        },
+        {
+            "_id": "r21",
+            "colId": "",
+            "containerId": "f3",
+            "name": "3.2 Segunda medición",
+            "url": "{{baseUrl}}/blood-pressure",
+            "method": "POST",
+            "sortNum": 20000,
+            "created": "2026-02-08T00:00:00.000Z",
+            "modified": "2026-02-08T00:00:00.000Z",
+            "headers": [
+                { "name": "Content-Type", "value": "application/json" },
+                { "name": "Accept", "value": "application/json" },
+                { "name": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+                "type": "json",
+                "raw": "{\n    \"systolic\": 142,\n    \"diastolic\": 91,\n    \"pulse\": 78,\n    \"notes\": \"Medición vespertina después de caminar\"\n}"
+            }
+        },
+        {
+            "_id": "r22",
+            "colId": "",
+            "containerId": "f3",
+            "name": "3.3 Medición alta (estrés)",
+            "url": "{{baseUrl}}/blood-pressure",
+            "method": "POST",
+            "sortNum": 30000,
+            "created": "2026-02-08T00:00:00.000Z",
+            "modified": "2026-02-08T00:00:00.000Z",
+            "headers": [
+                { "name": "Content-Type", "value": "application/json" },
+                { "name": "Accept", "value": "application/json" },
+                { "name": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+                "type": "json",
+                "raw": "{\n    \"systolic\": 160,\n    \"diastolic\": 100,\n    \"pulse\": 85,\n    \"notes\": \"Medición después de estrés laboral\"\n}"
+            }
+        },
+        {
+            "_id": "r23",
+            "colId": "",
+            "containerId": "f3",
+            "name": "3.4 Listar registros",
+            "url": "{{baseUrl}}/blood-pressure",
+            "method": "GET",
+            "sortNum": 40000,
+            "created": "2026-02-08T00:00:00.000Z",
+            "modified": "2026-02-08T00:00:00.000Z",
+            "headers": [
+                { "name": "Accept", "value": "application/json" },
+                { "name": "Authorization", "value": "Bearer {{token}}" }
+            ]
+        },
+        {
+            "_id": "r24",
+            "colId": "",
+            "containerId": "f3",
+            "name": "3.5 Ver registro ID=1",
+            "url": "{{baseUrl}}/blood-pressure/1",
+            "method": "GET",
+            "sortNum": 50000,
+            "created": "2026-02-08T00:00:00.000Z",
+            "modified": "2026-02-08T00:00:00.000Z",
+            "headers": [
+                { "name": "Accept", "value": "application/json" },
+                { "name": "Authorization", "value": "Bearer {{token}}" }
+            ]
+        },
+        {
+            "_id": "r25",
+            "colId": "",
+            "containerId": "f3",
+            "name": "3.6 Estadísticas",
+            "url": "{{baseUrl}}/blood-pressure-stats",
+            "method": "GET",
+            "sortNum": 60000,
+            "created": "2026-02-08T00:00:00.000Z",
+            "modified": "2026-02-08T00:00:00.000Z",
+            "headers": [
+                { "name": "Accept", "value": "application/json" },
+                { "name": "Authorization", "value": "Bearer {{token}}" }
+            ]
+        },
+        {
+            "_id": "r26",
+            "colId": "",
+            "containerId": "f3",
+            "name": "3.7 Eliminar registro ID=3",
+            "url": "{{baseUrl}}/blood-pressure/3",
+            "method": "DELETE",
+            "sortNum": 70000,
+            "created": "2026-02-08T00:00:00.000Z",
+            "modified": "2026-02-08T00:00:00.000Z",
+            "headers": [
+                { "name": "Accept", "value": "application/json" },
+                { "name": "Authorization", "value": "Bearer {{token}}" }
+            ]
+        },
+        {
+            "_id": "r30",
+            "colId": "",
+            "containerId": "f4",
+            "name": "4.1 Dashboard general",
+            "url": "{{baseUrl}}/dashboard",
+            "method": "GET",
+            "sortNum": 10000,
+            "created": "2026-02-08T00:00:00.000Z",
+            "modified": "2026-02-08T00:00:00.000Z",
+            "headers": [
+                { "name": "Accept", "value": "application/json" },
+                { "name": "Authorization", "value": "Bearer {{token}}" }
+            ]
+        },
+        {
+            "_id": "r31",
+            "colId": "",
+            "containerId": "f4",
+            "name": "4.2 Historial",
+            "url": "{{baseUrl}}/history",
+            "method": "GET",
+            "sortNum": 20000,
+            "created": "2026-02-08T00:00:00.000Z",
+            "modified": "2026-02-08T00:00:00.000Z",
+            "headers": [
+                { "name": "Accept", "value": "application/json" },
+                { "name": "Authorization", "value": "Bearer {{token}}" }
+            ]
+        },
+        {
+            "_id": "r32",
+            "colId": "",
+            "containerId": "f4",
+            "name": "4.3 Recomendaciones nutricionales",
+            "url": "{{baseUrl}}/nutritional-recommendations",
+            "method": "GET",
+            "sortNum": 30000,
+            "created": "2026-02-08T00:00:00.000Z",
+            "modified": "2026-02-08T00:00:00.000Z",
+            "headers": [
+                { "name": "Accept", "value": "application/json" },
+                { "name": "Authorization", "value": "Bearer {{token}}" }
+            ]
+        },
+        {
+            "_id": "r40",
+            "colId": "",
+            "containerId": "f5",
+            "name": "5.1 Listar alimentos",
+            "url": "{{baseUrl}}/foods",
+            "method": "GET",
+            "sortNum": 10000,
+            "created": "2026-02-08T00:00:00.000Z",
+            "modified": "2026-02-08T00:00:00.000Z",
+            "headers": [
+                { "name": "Accept", "value": "application/json" },
+                { "name": "Authorization", "value": "Bearer {{token}}" }
+            ]
+        },
+        {
+            "_id": "r41",
+            "colId": "",
+            "containerId": "f5",
+            "name": "5.2 Crear alimento",
+            "url": "{{baseUrl}}/foods",
+            "method": "POST",
+            "sortNum": 20000,
+            "created": "2026-02-08T00:00:00.000Z",
+            "modified": "2026-02-08T00:00:00.000Z",
+            "headers": [
+                { "name": "Content-Type", "value": "application/json" },
+                { "name": "Accept", "value": "application/json" },
+                { "name": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+                "type": "json",
+                "raw": "{\n    \"name\": \"Avena integral\",\n    \"category\": \"cereales\",\n    \"calories_per_100g\": 389,\n    \"sodium_mg_per_100g\": 2,\n    \"potassium_mg_per_100g\": 429,\n    \"is_recommended\": true,\n    \"description\": \"Cereal integral rico en fibra soluble, ayuda a reducir el colesterol\"\n}"
+            }
+        },
+        {
+            "_id": "r42",
+            "colId": "",
+            "containerId": "f5",
+            "name": "5.3 Ver alimento ID=1",
+            "url": "{{baseUrl}}/foods/1",
+            "method": "GET",
+            "sortNum": 30000,
+            "created": "2026-02-08T00:00:00.000Z",
+            "modified": "2026-02-08T00:00:00.000Z",
+            "headers": [
+                { "name": "Accept", "value": "application/json" },
+                { "name": "Authorization", "value": "Bearer {{token}}" }
+            ]
+        },
+        {
+            "_id": "r43",
+            "colId": "",
+            "containerId": "f5",
+            "name": "5.4 Registrar consumo (desayuno)",
+            "url": "{{baseUrl}}/food-logs",
+            "method": "POST",
+            "sortNum": 40000,
+            "created": "2026-02-08T00:00:00.000Z",
+            "modified": "2026-02-08T00:00:00.000Z",
+            "headers": [
+                { "name": "Content-Type", "value": "application/json" },
+                { "name": "Accept", "value": "application/json" },
+                { "name": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+                "type": "json",
+                "raw": "{\n    \"food_id\": 1,\n    \"meal_type\": \"desayuno\",\n    \"quantity_grams\": 150,\n    \"notes\": \"Avena con frutas\"\n}"
+            }
+        },
+        {
+            "_id": "r44",
+            "colId": "",
+            "containerId": "f5",
+            "name": "5.5 Registrar consumo (almuerzo)",
+            "url": "{{baseUrl}}/food-logs",
+            "method": "POST",
+            "sortNum": 50000,
+            "created": "2026-02-08T00:00:00.000Z",
+            "modified": "2026-02-08T00:00:00.000Z",
+            "headers": [
+                { "name": "Content-Type", "value": "application/json" },
+                { "name": "Accept", "value": "application/json" },
+                { "name": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+                "type": "json",
+                "raw": "{\n    \"food_id\": 2,\n    \"meal_type\": \"almuerzo\",\n    \"quantity_grams\": 200,\n    \"notes\": \"Pechuga de pollo a la plancha\"\n}"
+            }
+        },
+        {
+            "_id": "r45",
+            "colId": "",
+            "containerId": "f5",
+            "name": "5.6 Listar registros de consumo",
+            "url": "{{baseUrl}}/food-logs",
+            "method": "GET",
+            "sortNum": 60000,
+            "created": "2026-02-08T00:00:00.000Z",
+            "modified": "2026-02-08T00:00:00.000Z",
+            "headers": [
+                { "name": "Accept", "value": "application/json" },
+                { "name": "Authorization", "value": "Bearer {{token}}" }
+            ]
+        },
+        {
+            "_id": "r50",
+            "colId": "",
+            "containerId": "f6",
+            "name": "6.1 Crear plan alimenticio (desayuno)",
+            "url": "{{baseUrl}}/meal-plans",
+            "method": "POST",
+            "sortNum": 10000,
+            "created": "2026-02-08T00:00:00.000Z",
+            "modified": "2026-02-08T00:00:00.000Z",
+            "headers": [
+                { "name": "Content-Type", "value": "application/json" },
+                { "name": "Accept", "value": "application/json" },
+                { "name": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+                "type": "json",
+                "raw": "{\n    \"name\": \"Plan DASH semanal\",\n    \"description\": \"Plan basado en la dieta DASH para controlar hipertensión\",\n    \"day_of_week\": \"lunes\",\n    \"meal_type\": \"desayuno\",\n    \"food_items\": \"Avena integral con banana, yogur griego sin azúcar, té verde\",\n    \"calories\": 450,\n    \"sodium_mg\": 180\n}"
+            }
+        },
+        {
+            "_id": "r51",
+            "colId": "",
+            "containerId": "f6",
+            "name": "6.2 Crear plan alimenticio (almuerzo)",
+            "url": "{{baseUrl}}/meal-plans",
+            "method": "POST",
+            "sortNum": 20000,
+            "created": "2026-02-08T00:00:00.000Z",
+            "modified": "2026-02-08T00:00:00.000Z",
+            "headers": [
+                { "name": "Content-Type", "value": "application/json" },
+                { "name": "Accept", "value": "application/json" },
+                { "name": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+                "type": "json",
+                "raw": "{\n    \"name\": \"Plan DASH semanal\",\n    \"description\": \"Almuerzo balanceado bajo en sodio\",\n    \"day_of_week\": \"lunes\",\n    \"meal_type\": \"almuerzo\",\n    \"food_items\": \"Salmón al horno con brócoli y arroz integral, ensalada de espinacas\",\n    \"calories\": 620,\n    \"sodium_mg\": 350\n}"
+            }
+        },
+        {
+            "_id": "r52",
+            "colId": "",
+            "containerId": "f6",
+            "name": "6.3 Listar planes",
+            "url": "{{baseUrl}}/meal-plans",
+            "method": "GET",
+            "sortNum": 30000,
+            "created": "2026-02-08T00:00:00.000Z",
+            "modified": "2026-02-08T00:00:00.000Z",
+            "headers": [
+                { "name": "Accept", "value": "application/json" },
+                { "name": "Authorization", "value": "Bearer {{token}}" }
+            ]
+        },
+        {
+            "_id": "r53",
+            "colId": "",
+            "containerId": "f6",
+            "name": "6.4 Actualizar plan ID=1",
+            "url": "{{baseUrl}}/meal-plans/1",
+            "method": "PUT",
+            "sortNum": 40000,
+            "created": "2026-02-08T00:00:00.000Z",
+            "modified": "2026-02-08T00:00:00.000Z",
+            "headers": [
+                { "name": "Content-Type", "value": "application/json" },
+                { "name": "Accept", "value": "application/json" },
+                { "name": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+                "type": "json",
+                "raw": "{\n    \"calories\": 420,\n    \"sodium_mg\": 150,\n    \"food_items\": \"Avena integral con arándanos, yogur griego sin azúcar, infusión de hibisco\"\n}"
+            }
+        },
+        {
+            "_id": "r60",
+            "colId": "",
+            "containerId": "f7",
+            "name": "7.1 Crear medicamento (Losartán)",
+            "url": "{{baseUrl}}/medications",
+            "method": "POST",
+            "sortNum": 10000,
+            "created": "2026-02-08T00:00:00.000Z",
+            "modified": "2026-02-08T00:00:00.000Z",
+            "headers": [
+                { "name": "Content-Type", "value": "application/json" },
+                { "name": "Accept", "value": "application/json" },
+                { "name": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+                "type": "json",
+                "raw": "{\n    \"name\": \"Losartán\",\n    \"dosage\": \"50mg\",\n    \"frequency\": \"diario\",\n    \"instructions\": \"Tomar en ayunas con un vaso de agua\",\n    \"start_date\": \"2026-02-01\",\n    \"notes\": \"Prescrito por Dr. García\"\n}"
+            }
+        },
+        {
+            "_id": "r61",
+            "colId": "",
+            "containerId": "f7",
+            "name": "7.2 Crear medicamento (Amlodipino)",
+            "url": "{{baseUrl}}/medications",
+            "method": "POST",
+            "sortNum": 20000,
+            "created": "2026-02-08T00:00:00.000Z",
+            "modified": "2026-02-08T00:00:00.000Z",
+            "headers": [
+                { "name": "Content-Type", "value": "application/json" },
+                { "name": "Accept", "value": "application/json" },
+                { "name": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+                "type": "json",
+                "raw": "{\n    \"name\": \"Amlodipino\",\n    \"dosage\": \"5mg\",\n    \"frequency\": \"diario\",\n    \"instructions\": \"Tomar por la noche\",\n    \"start_date\": \"2026-02-01\",\n    \"notes\": \"Complemento para control de presión\"\n}"
+            }
+        },
+        {
+            "_id": "r62",
+            "colId": "",
+            "containerId": "f7",
+            "name": "7.3 Listar medicamentos",
+            "url": "{{baseUrl}}/medications",
+            "method": "GET",
+            "sortNum": 30000,
+            "created": "2026-02-08T00:00:00.000Z",
+            "modified": "2026-02-08T00:00:00.000Z",
+            "headers": [
+                { "name": "Accept", "value": "application/json" },
+                { "name": "Authorization", "value": "Bearer {{token}}" }
+            ]
+        },
+        {
+            "_id": "r63",
+            "colId": "",
+            "containerId": "f7",
+            "name": "7.4 Ver medicamento ID=1",
+            "url": "{{baseUrl}}/medications/1",
+            "method": "GET",
+            "sortNum": 40000,
+            "created": "2026-02-08T00:00:00.000Z",
+            "modified": "2026-02-08T00:00:00.000Z",
+            "headers": [
+                { "name": "Accept", "value": "application/json" },
+                { "name": "Authorization", "value": "Bearer {{token}}" }
+            ]
+        },
+        {
+            "_id": "r64",
+            "colId": "",
+            "containerId": "f7",
+            "name": "7.5 Actualizar medicamento ID=1",
+            "url": "{{baseUrl}}/medications/1",
+            "method": "PUT",
+            "sortNum": 50000,
+            "created": "2026-02-08T00:00:00.000Z",
+            "modified": "2026-02-08T00:00:00.000Z",
+            "headers": [
+                { "name": "Content-Type", "value": "application/json" },
+                { "name": "Accept", "value": "application/json" },
+                { "name": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+                "type": "json",
+                "raw": "{\n    \"dosage\": \"100mg\",\n    \"instructions\": \"Tomar en ayunas, aumentada la dosis por indicación médica\"\n}"
+            }
+        },
+        {
+            "_id": "r70",
+            "colId": "",
+            "containerId": "f8",
+            "name": "8.1 Crear alarma para medicamento 1",
+            "url": "{{baseUrl}}/medications/1/alarms",
+            "method": "POST",
+            "sortNum": 10000,
+            "created": "2026-02-08T00:00:00.000Z",
+            "modified": "2026-02-08T00:00:00.000Z",
+            "headers": [
+                { "name": "Content-Type", "value": "application/json" },
+                { "name": "Accept", "value": "application/json" },
+                { "name": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+                "type": "json",
+                "raw": "{\n    \"time\": \"07:00\",\n    \"days\": [\"lunes\", \"martes\", \"miercoles\", \"jueves\", \"viernes\", \"sabado\", \"domingo\"],\n    \"is_active\": true,\n    \"label\": \"Tomar Losartán en ayunas\"\n}"
+            }
+        },
+        {
+            "_id": "r71",
+            "colId": "",
+            "containerId": "f8",
+            "name": "8.2 Actualizar alarma ID=1",
+            "url": "{{baseUrl}}/medication-alarms/1",
+            "method": "PUT",
+            "sortNum": 20000,
+            "created": "2026-02-08T00:00:00.000Z",
+            "modified": "2026-02-08T00:00:00.000Z",
+            "headers": [
+                { "name": "Content-Type", "value": "application/json" },
+                { "name": "Accept", "value": "application/json" },
+                { "name": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+                "type": "json",
+                "raw": "{\n    \"time\": \"06:30\",\n    \"label\": \"Tomar Losartán antes del desayuno\"\n}"
+            }
+        },
+        {
+            "_id": "r80",
+            "colId": "",
+            "containerId": "f9",
+            "name": "9.1 Registrar toma de medicamento",
+            "url": "{{baseUrl}}/medications/1/logs",
+            "method": "POST",
+            "sortNum": 10000,
+            "created": "2026-02-08T00:00:00.000Z",
+            "modified": "2026-02-08T00:00:00.000Z",
+            "headers": [
+                { "name": "Content-Type", "value": "application/json" },
+                { "name": "Accept", "value": "application/json" },
+                { "name": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+                "type": "json",
+                "raw": "{\n    \"taken_at\": \"2026-02-08 07:15:00\",\n    \"status\": \"tomado\",\n    \"notes\": \"Tomado con el desayuno\"\n}"
+            }
+        },
+        {
+            "_id": "r81",
+            "colId": "",
+            "containerId": "f9",
+            "name": "9.2 Registrar toma omitida",
+            "url": "{{baseUrl}}/medications/1/logs",
+            "method": "POST",
+            "sortNum": 20000,
+            "created": "2026-02-08T00:00:00.000Z",
+            "modified": "2026-02-08T00:00:00.000Z",
+            "headers": [
+                { "name": "Content-Type", "value": "application/json" },
+                { "name": "Accept", "value": "application/json" },
+                { "name": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+                "type": "json",
+                "raw": "{\n    \"taken_at\": \"2026-02-07 07:00:00\",\n    \"status\": \"omitido\",\n    \"notes\": \"Se me olvidó por la mañana\"\n}"
+            }
+        },
+        {
+            "_id": "r82",
+            "colId": "",
+            "containerId": "f9",
+            "name": "9.3 Listar registros de toma",
+            "url": "{{baseUrl}}/medications/1/logs",
+            "method": "GET",
+            "sortNum": 30000,
+            "created": "2026-02-08T00:00:00.000Z",
+            "modified": "2026-02-08T00:00:00.000Z",
+            "headers": [
+                { "name": "Accept", "value": "application/json" },
+                { "name": "Authorization", "value": "Bearer {{token}}" }
+            ]
+        },
+        {
+            "_id": "r83",
+            "colId": "",
+            "containerId": "f9",
+            "name": "9.4 Ver adherencia",
+            "url": "{{baseUrl}}/medication-adherence",
+            "method": "GET",
+            "sortNum": 40000,
+            "created": "2026-02-08T00:00:00.000Z",
+            "modified": "2026-02-08T00:00:00.000Z",
+            "headers": [
+                { "name": "Accept", "value": "application/json" },
+                { "name": "Authorization", "value": "Bearer {{token}}" }
+            ]
+        },
+        {
+            "_id": "r90",
+            "colId": "",
+            "containerId": "f10",
+            "name": "10.1 Listar contenido educativo",
+            "url": "{{baseUrl}}/educational-contents",
+            "method": "GET",
+            "sortNum": 10000,
+            "created": "2026-02-08T00:00:00.000Z",
+            "modified": "2026-02-08T00:00:00.000Z",
+            "headers": [
+                { "name": "Accept", "value": "application/json" },
+                { "name": "Authorization", "value": "Bearer {{token}}" }
+            ]
+        },
+        {
+            "_id": "r91",
+            "colId": "",
+            "containerId": "f10",
+            "name": "10.2 Ver contenido ID=1",
+            "url": "{{baseUrl}}/educational-contents/1",
+            "method": "GET",
+            "sortNum": 20000,
+            "created": "2026-02-08T00:00:00.000Z",
+            "modified": "2026-02-08T00:00:00.000Z",
+            "headers": [
+                { "name": "Accept", "value": "application/json" },
+                { "name": "Authorization", "value": "Bearer {{token}}" }
+            ]
+        },
+        {
+            "_id": "r100",
+            "colId": "",
+            "containerId": "f11",
+            "name": "11.1 Listar hábitos",
+            "url": "{{baseUrl}}/habits",
+            "method": "GET",
+            "sortNum": 10000,
+            "created": "2026-02-08T00:00:00.000Z",
+            "modified": "2026-02-08T00:00:00.000Z",
+            "headers": [
+                { "name": "Accept", "value": "application/json" },
+                { "name": "Authorization", "value": "Bearer {{token}}" }
+            ]
+        },
+        {
+            "_id": "r101",
+            "colId": "",
+            "containerId": "f11",
+            "name": "11.2 Registrar hábito completado",
+            "url": "{{baseUrl}}/habit-logs",
+            "method": "POST",
+            "sortNum": 20000,
+            "created": "2026-02-08T00:00:00.000Z",
+            "modified": "2026-02-08T00:00:00.000Z",
+            "headers": [
+                { "name": "Content-Type", "value": "application/json" },
+                { "name": "Accept", "value": "application/json" },
+                { "name": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+                "type": "json",
+                "raw": "{\n    \"habit_id\": 1,\n    \"notes\": \"Caminata de 30 minutos por el parque\"\n}"
+            }
+        },
+        {
+            "_id": "r102",
+            "colId": "",
+            "containerId": "f11",
+            "name": "11.3 Registrar otro hábito",
+            "url": "{{baseUrl}}/habit-logs",
+            "method": "POST",
+            "sortNum": 30000,
+            "created": "2026-02-08T00:00:00.000Z",
+            "modified": "2026-02-08T00:00:00.000Z",
+            "headers": [
+                { "name": "Content-Type", "value": "application/json" },
+                { "name": "Accept", "value": "application/json" },
+                { "name": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+                "type": "json",
+                "raw": "{\n    \"habit_id\": 2,\n    \"notes\": \"Meditación guiada de 15 minutos\"\n}"
+            }
+        },
+        {
+            "_id": "r103",
+            "colId": "",
+            "containerId": "f11",
+            "name": "11.4 Listar registros de hábitos",
+            "url": "{{baseUrl}}/habit-logs",
+            "method": "GET",
+            "sortNum": 40000,
+            "created": "2026-02-08T00:00:00.000Z",
+            "modified": "2026-02-08T00:00:00.000Z",
+            "headers": [
+                { "name": "Accept", "value": "application/json" },
+                { "name": "Authorization", "value": "Bearer {{token}}" }
+            ]
+        },
+        {
+            "_id": "r104",
+            "colId": "",
+            "containerId": "f11",
+            "name": "11.5 Rachas de hábitos",
+            "url": "{{baseUrl}}/habit-streaks",
+            "method": "GET",
+            "sortNum": 50000,
+            "created": "2026-02-08T00:00:00.000Z",
+            "modified": "2026-02-08T00:00:00.000Z",
+            "headers": [
+                { "name": "Accept", "value": "application/json" },
+                { "name": "Authorization", "value": "Bearer {{token}}" }
+            ]
+        },
+        {
+            "_id": "r105",
+            "colId": "",
+            "containerId": "f11",
+            "name": "11.6 Racha de hábito ID=1",
+            "url": "{{baseUrl}}/habit-streaks/1",
+            "method": "GET",
+            "sortNum": 60000,
+            "created": "2026-02-08T00:00:00.000Z",
+            "modified": "2026-02-08T00:00:00.000Z",
+            "headers": [
+                { "name": "Accept", "value": "application/json" },
+                { "name": "Authorization", "value": "Bearer {{token}}" }
+            ]
+        },
+        {
+            "_id": "r110",
+            "colId": "",
+            "containerId": "f12",
+            "name": "12.1 Listar infusiones",
+            "url": "{{baseUrl}}/infusions",
+            "method": "GET",
+            "sortNum": 10000,
+            "created": "2026-02-08T00:00:00.000Z",
+            "modified": "2026-02-08T00:00:00.000Z",
+            "headers": [
+                { "name": "Accept", "value": "application/json" },
+                { "name": "Authorization", "value": "Bearer {{token}}" }
+            ]
+        },
+        {
+            "_id": "r111",
+            "colId": "",
+            "containerId": "f12",
+            "name": "12.2 Crear infusión",
+            "url": "{{baseUrl}}/infusions",
+            "method": "POST",
+            "sortNum": 20000,
+            "created": "2026-02-08T00:00:00.000Z",
+            "modified": "2026-02-08T00:00:00.000Z",
+            "headers": [
+                { "name": "Content-Type", "value": "application/json" },
+                { "name": "Accept", "value": "application/json" },
+                { "name": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+                "type": "json",
+                "raw": "{\n    \"name\": \"Infusión de hibisco (jamaica)\",\n    \"description\": \"Rica en antioxidantes, ayuda a reducir la presión arterial\",\n    \"benefits\": \"Reduce presión arterial, antioxidante, antiinflamatorio\",\n    \"preparation\": \"Hervir agua, agregar flores de hibisco, dejar reposar 5-10 minutos\",\n    \"is_recommended_for_hta\": true\n}"
+            }
+        },
+        {
+            "_id": "r112",
+            "colId": "",
+            "containerId": "f12",
+            "name": "12.3 Registrar vaso de agua",
+            "url": "{{baseUrl}}/hydration-logs",
+            "method": "POST",
+            "sortNum": 30000,
+            "created": "2026-02-08T00:00:00.000Z",
+            "modified": "2026-02-08T00:00:00.000Z",
+            "headers": [
+                { "name": "Content-Type", "value": "application/json" },
+                { "name": "Accept", "value": "application/json" },
+                { "name": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+                "type": "json",
+                "raw": "{\n    \"type\": \"agua\",\n    \"quantity_ml\": 250,\n    \"notes\": \"Vaso de agua al despertar\"\n}"
+            }
+        },
+        {
+            "_id": "r113",
+            "colId": "",
+            "containerId": "f12",
+            "name": "12.4 Registrar infusión",
+            "url": "{{baseUrl}}/hydration-logs",
+            "method": "POST",
+            "sortNum": 40000,
+            "created": "2026-02-08T00:00:00.000Z",
+            "modified": "2026-02-08T00:00:00.000Z",
+            "headers": [
+                { "name": "Content-Type", "value": "application/json" },
+                { "name": "Accept", "value": "application/json" },
+                { "name": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+                "type": "json",
+                "raw": "{\n    \"type\": \"infusion\",\n    \"infusion_id\": 1,\n    \"quantity_ml\": 200,\n    \"notes\": \"Té de hibisco en la tarde\"\n}"
+            }
+        },
+        {
+            "_id": "r114",
+            "colId": "",
+            "containerId": "f12",
+            "name": "12.5 Registrar botella de agua",
+            "url": "{{baseUrl}}/hydration-logs",
+            "method": "POST",
+            "sortNum": 50000,
+            "created": "2026-02-08T00:00:00.000Z",
+            "modified": "2026-02-08T00:00:00.000Z",
+            "headers": [
+                { "name": "Content-Type", "value": "application/json" },
+                { "name": "Accept", "value": "application/json" },
+                { "name": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+                "type": "json",
+                "raw": "{\n    \"type\": \"agua\",\n    \"quantity_ml\": 500,\n    \"notes\": \"Botella de agua durante ejercicio\"\n}"
+            }
+        },
+        {
+            "_id": "r115",
+            "colId": "",
+            "containerId": "f12",
+            "name": "12.6 Listar hidratación",
+            "url": "{{baseUrl}}/hydration-logs",
+            "method": "GET",
+            "sortNum": 60000,
+            "created": "2026-02-08T00:00:00.000Z",
+            "modified": "2026-02-08T00:00:00.000Z",
+            "headers": [
+                { "name": "Accept", "value": "application/json" },
+                { "name": "Authorization", "value": "Bearer {{token}}" }
+            ]
+        },
+        {
+            "_id": "r116",
+            "colId": "",
+            "containerId": "f12",
+            "name": "12.7 Resumen de hidratación",
+            "url": "{{baseUrl}}/hydration-summary",
+            "method": "GET",
+            "sortNum": 70000,
+            "created": "2026-02-08T00:00:00.000Z",
+            "modified": "2026-02-08T00:00:00.000Z",
+            "headers": [
+                { "name": "Accept", "value": "application/json" },
+                { "name": "Authorization", "value": "Bearer {{token}}" }
+            ]
+        },
+        {
+            "_id": "r120",
+            "colId": "",
+            "containerId": "f13",
+            "name": "ERROR: Login credenciales incorrectas",
+            "url": "{{baseUrl}}/login",
+            "method": "POST",
+            "sortNum": 10000,
+            "created": "2026-02-08T00:00:00.000Z",
+            "modified": "2026-02-08T00:00:00.000Z",
+            "headers": [
+                { "name": "Content-Type", "value": "application/json" },
+                { "name": "Accept", "value": "application/json" }
+            ],
+            "body": {
+                "type": "json",
+                "raw": "{\n    \"email\": \"noexiste@prueba.com\",\n    \"password\": \"wrongpassword\"\n}"
+            }
+        },
+        {
+            "_id": "r121",
+            "colId": "",
+            "containerId": "f13",
+            "name": "ERROR: Email duplicado",
+            "url": "{{baseUrl}}/register",
+            "method": "POST",
+            "sortNum": 20000,
+            "created": "2026-02-08T00:00:00.000Z",
+            "modified": "2026-02-08T00:00:00.000Z",
+            "headers": [
+                { "name": "Content-Type", "value": "application/json" },
+                { "name": "Accept", "value": "application/json" }
+            ],
+            "body": {
+                "type": "json",
+                "raw": "{\n    \"name\": \"Otro Usuario\",\n    \"email\": \"raul@prueba.com\",\n    \"password\": \"password123\",\n    \"password_confirmation\": \"password123\"\n}"
+            }
+        },
+        {
+            "_id": "r122",
+            "colId": "",
+            "containerId": "f13",
+            "name": "ERROR: Sin token (401)",
+            "url": "{{baseUrl}}/me",
+            "method": "GET",
+            "sortNum": 30000,
+            "created": "2026-02-08T00:00:00.000Z",
+            "modified": "2026-02-08T00:00:00.000Z",
+            "headers": [
+                { "name": "Accept", "value": "application/json" }
+            ]
+        },
+        {
+            "_id": "r123",
+            "colId": "",
+            "containerId": "f13",
+            "name": "ERROR: Presión arterial inválida",
+            "url": "{{baseUrl}}/blood-pressure",
+            "method": "POST",
+            "sortNum": 40000,
+            "created": "2026-02-08T00:00:00.000Z",
+            "modified": "2026-02-08T00:00:00.000Z",
+            "headers": [
+                { "name": "Content-Type", "value": "application/json" },
+                { "name": "Accept", "value": "application/json" },
+                { "name": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+                "type": "json",
+                "raw": "{\n    \"systolic\": -10,\n    \"diastolic\": 999\n}"
+            }
+        },
+        {
+            "_id": "r124",
+            "colId": "",
+            "containerId": "f13",
+            "name": "ERROR: Passwords no coinciden",
+            "url": "{{baseUrl}}/register",
+            "method": "POST",
+            "sortNum": 50000,
+            "created": "2026-02-08T00:00:00.000Z",
+            "modified": "2026-02-08T00:00:00.000Z",
+            "headers": [
+                { "name": "Content-Type", "value": "application/json" },
+                { "name": "Accept", "value": "application/json" }
+            ],
+            "body": {
+                "type": "json",
+                "raw": "{\n    \"name\": \"Test Error\",\n    \"email\": \"error@prueba.com\",\n    \"password\": \"password123\",\n    \"password_confirmation\": \"otrapassword\"\n}"
+            }
+        }
+    ]
+}
