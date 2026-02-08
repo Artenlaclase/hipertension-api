@@ -35,6 +35,15 @@ class RouteServiceProvider extends ServiceProvider
 
             Route::middleware('web')
                 ->group(base_path('routes/web.php'));
+
+            // Root route without web middleware (avoids session issues)
+            Route::get('/', function () {
+                return response()->json([
+                    'app'     => 'Hipertensión API',
+                    'version' => app()->version(),
+                    'status'  => 'running',
+                ]);
+            });
         });
     }
 }

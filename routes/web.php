@@ -13,10 +13,4 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return response()->json([
-        'app'     => 'Hipertensión API',
-        'version' => app()->version(),
-        'status'  => 'running',
-    ]);
-});
+// Root route is defined in RouteServiceProvider (no web middleware needed)
