@@ -6,7 +6,7 @@
     "variables": [
         {
             "name": "baseUrl",
-            "value": "https://www.api-htapp.raulrosales.net/api"
+            "value": "http://localhost:8000/api"
         },
         {
             "name": "token",

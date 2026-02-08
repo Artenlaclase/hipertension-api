@@ -10,8 +10,8 @@ return new class extends Migration
     {
         Schema::create('food_logs', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->foreignId('food_id')->constrained()->onDelete('cascade');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('food_id')->constrained('foods')->onDelete('cascade');
             $table->string('portion');
             $table->dateTime('consumed_at');
             $table->timestamps();

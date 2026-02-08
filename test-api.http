@@ -10,7 +10,7 @@
 #  4. Ejecuta las demás peticiones en orden.
 ###############################################################################
 
-@baseUrl = https://www.api-htapp.raulrosales.net/api
+@baseUrl = http://localhost:8000/api
 
 # ── Pega aquí tu token JWT después de hacer login/register ──────────
 @token = TU_TOKEN_AQUI
