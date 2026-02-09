@@ -2,7 +2,7 @@
 
 > **Proyecto**: Hipertensión API  
 > **Framework**: Laravel 10.50.0 / PHP 8.3  
-> **Hosting**: Bluehosting (cPanel, sin acceso SSH)  
+> **Hosting**:(cPanel, sin acceso SSH)  
 > **Dominio**: `api-htapp.terapiatarot.com`  
 > **Fecha**: Febrero 2026
 
