@@ -1,3 +1,16 @@
+// ── Verificación de email ─────────────────────────────────────────
+use Illuminate\Http\Request;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
+Route::middleware('auth:api')->group(function () {
+    Route::post('email/verification-notification', function (Request $request) {
+        $request->user()->sendEmailVerificationNotification();
+        return response()->json(['message' => 'Correo de verificación enviado.']);
+    })->middleware('throttle:6,1');
+});
+Route::get('email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+    $request->fulfill();
+    return response()->json(['message' => 'Email verificado correctamente.']);
+})->middleware(['auth:api', 'signed'])->name('verification.verify');
 <?php
 
 use Illuminate\Support\Facades\Route;
@@ -28,6 +41,12 @@ use App\Http\Controllers\HydrationLogController;
 // ── Auth (público) ──────────────────────────────────────────────────
 Route::post('register', [AuthController::class, 'register']);
 Route::post('login',    [AuthController::class, 'login']);
+
+// ── Recuperación de contraseña ─────────────────────────────────────
+use App\Http\Controllers\PasswordResetController;
+Route::post('forgot-password', [PasswordResetController::class, 'forgotPassword'])->middleware('throttle:5,1');
+Route::post('reset-password', [PasswordResetController::class, 'resetPassword']);
+Route::post('validate-reset-token', [PasswordResetController::class, 'validateToken']);
 
 // ── Disclaimer público (RNF-05) ─────────────────────────────────────
 Route::get('disclaimer', function () {
@@ -107,9 +126,9 @@ Route::middleware('auth:api')->group(function () {
     Route::get('infusions/{infusion}',   [InfusionController::class, 'show']);
     Route::post('infusions',             [InfusionController::class, 'store']);
 
-    // ── Registro de hidratación ─────────────────────────────────────
-    Route::get('hydration-logs',         [HydrationLogController::class, 'index']);
-    Route::post('hydration-logs',        [HydrationLogController::class, 'store']);
-    Route::delete('hydration-logs/{hydration_log}', [HydrationLogController::class, 'destroy']);
-    Route::get('hydration-summary',      [HydrationLogController::class, 'summary']);
+    // ── Hidratación (nuevo módulo) ──────────────────────────────────
+    Route::apiResource('hydration-records', App\Http\Controllers\HydrationRecordController::class);
+    Route::get('hydration-goals', [App\Http\Controllers\HydrationGoalController::class, 'show']);
+    Route::post('hydration-goals', [App\Http\Controllers\HydrationGoalController::class, 'store']);
+    Route::get('hydration-stats', [App\Http\Controllers\HydrationStatsController::class, 'index']);
 });

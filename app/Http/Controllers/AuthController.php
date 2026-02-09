@@ -27,10 +27,16 @@ class AuthController extends Controller
 
         $token = JWTAuth::fromUser($user);
 
-        return response()->json(array_merge(
-            $this->tokenPayload($token),
-            ['user' => $user]
-        ), 201);
+        return response()->json([
+            'data' => [
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'email_verified' => false,
+            ],
+            'token' => $token,
+            'message' => 'Registro exitoso. Se envió un correo de verificación.'
+        ], 201);
     }
 
     public function login(Request $request)
@@ -54,7 +60,17 @@ class AuthController extends Controller
 
     public function me()
     {
-        return response()->json(auth()->user());
+        $user = auth()->user();
+        return response()->json([
+            'data' => [
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'email_verified' => !is_null($user->email_verified_at),
+                'email_verified_at' => $user->email_verified_at,
+                // ...otros campos si es necesario...
+            ]
+        ]);
     }
 
     public function logout()
