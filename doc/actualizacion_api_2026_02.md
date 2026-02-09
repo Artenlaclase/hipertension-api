@@ -83,4 +83,4 @@
 ---
 
 **Fecha:** 2026-02-09
-**Responsable:** GitHub Copilot
+**Responsable:** Raúl Rosales 
